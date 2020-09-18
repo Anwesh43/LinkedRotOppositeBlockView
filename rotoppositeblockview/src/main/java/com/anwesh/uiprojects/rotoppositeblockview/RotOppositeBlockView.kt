@@ -35,9 +35,9 @@ fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
 
 fun Canvas.drawRotOppositeBlock(scale : Float, w : Float, h : Float, paint : Paint) {
     val sf : Float = scale.sinify()
-    val sf1 : Float = scale.divideScale(0, parts)
-    val sf2 : Float = scale.divideScale(1, parts)
-    val sf3 : Float = scale.divideScale(2, parts)
+    val sf1 : Float = sf.divideScale(0, parts)
+    val sf2 : Float = sf.divideScale(1, parts)
+    val sf3 : Float = sf.divideScale(2, parts)
     val y : Float = (h / 2 - w / 2) * sf2
     val size : Float = Math.min(w, h) / sizeFactor
     val rSize : Float = size * sf1
@@ -63,14 +63,16 @@ fun Canvas.drawROBNode(i : Int, scale : Float, paint : Paint) {
 
 class RotOppositeBlockView(ctx : Context) : View(ctx) {
 
-    override fun onDraw(canvas : Canvas) {
+    private val renderer : Renderer = Renderer(this)
 
+    override fun onDraw(canvas : Canvas) {
+        renderer.render(canvas)
     }
 
     override fun onTouchEvent(event : MotionEvent) : Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-
+                renderer.handleTap()
             }
         }
         return true
