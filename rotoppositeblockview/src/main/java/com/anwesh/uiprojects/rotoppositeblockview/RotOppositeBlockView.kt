@@ -26,8 +26,37 @@ val backColor : Int = Color.parseColor("#BDBDBD")
 val delay : Long = 20
 val parts : Int = 3
 val scGap : Float = 0.02f / parts
+val rot : Float = 90f
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
+
+fun Canvas.drawRotOppositeBlock(scale : Float, w : Float, h : Float, paint : Paint) {
+    val sf : Float = scale.sinify()
+    val sf1 : Float = scale.divideScale(0, parts)
+    val sf2 : Float = scale.divideScale(1, parts)
+    val sf3 : Float = scale.divideScale(2, parts)
+    val y : Float = (h / 2 - w / 2) * sf2
+    val size : Float = Math.min(w, h) / sizeFactor
+    val rSize : Float = size * sf1
+    save()
+    translate(w / 2, h / 2)
+    rotate(rot * sf3)
+    for (j in 0..1) {
+        save()
+        scale(1f, 1f - 2 * j)
+        translate(w / 2 - size / 2, y)
+        drawRect(RectF(-rSize / 2, 0f, rSize / 2, rSize), paint)
+        restore()
+    }
+    restore()
+}
+
+fun Canvas.drawROBNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    paint.color = colors[i]
+    drawRotOppositeBlock(scale, w, h, paint)
+}
