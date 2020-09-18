@@ -38,7 +38,7 @@ fun Canvas.drawRotOppositeBlock(scale : Float, w : Float, h : Float, paint : Pai
     val sf1 : Float = sf.divideScale(0, parts)
     val sf2 : Float = sf.divideScale(1, parts)
     val sf3 : Float = sf.divideScale(2, parts)
-    val y : Float = (h / 2 - w / 2) * sf2
+    val y : Float = - h / 2 + (h / 2 - w / 2) * sf2
     val size : Float = Math.min(w, h) / sizeFactor
     val rSize : Float = size * sf1
     save()
@@ -47,7 +47,7 @@ fun Canvas.drawRotOppositeBlock(scale : Float, w : Float, h : Float, paint : Pai
     for (j in 0..1) {
         save()
         scale(1f, 1f - 2 * j)
-        translate(w / 2 - size / 2, y)
+        translate(0f, y)
         drawRect(RectF(-rSize / 2, 0f, rSize / 2, rSize), paint)
         restore()
     }
