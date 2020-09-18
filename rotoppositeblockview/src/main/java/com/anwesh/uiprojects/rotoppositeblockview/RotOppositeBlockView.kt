@@ -123,4 +123,44 @@ class RotOppositeBlockView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class ROBNode(var i : Int, val state : State = State()) {
+
+        private var prev : ROBNode? = null
+        private var next : ROBNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < colors.size - 1) {
+                next = ROBNode(i + 1)
+                next?.prev = this
+            }
+        }
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawROBNode(i, state.scale, paint)
+        }
+
+        fun update(cb : (Float) -> Unit) {
+            state.update(cb)
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : ROBNode {
+            var curr : ROBNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+    }
 }
