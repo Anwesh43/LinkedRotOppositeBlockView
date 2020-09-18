@@ -186,4 +186,27 @@ class RotOppositeBlockView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : RotOppositeBlockView) {
+
+        private val animator : Animator = Animator(view)
+        private val rob : RotOppositeBlock = RotOppositeBlock(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            rob.draw(canvas, paint)
+            animator.animate {
+                rob.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            rob.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
