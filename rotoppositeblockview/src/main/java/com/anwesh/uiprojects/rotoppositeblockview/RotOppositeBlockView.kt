@@ -211,4 +211,13 @@ class RotOppositeBlockView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : RotOppositeBlockView {
+            val view : RotOppositeBlockView = RotOppositeBlockView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
